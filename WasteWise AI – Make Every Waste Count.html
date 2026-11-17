@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>WasteWise AI – Make Every Waste Count</title>
+<style>
+:root{--bg:#f4faf5;--card:#fff;--tx:#12301f;--mu:#5b7a67;--g:#1f9d55;--g2:#0e6b3a;--gl:#dff5e6;--bd:#d4e8da;--sh:0 4px 20px rgba(20,90,50,.1);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0d1a12;--card:#15281c;--tx:#e6f4ea;--mu:#93b5a0;--g:#3ccf7a;--g2:#7fe3a8;--gl:#1b3a29;--bd:#25402f;--sh:0 4px 20px rgba(0,0,0,.4);color-scheme:dark}}
+:root[data-theme=dark]{--bg:#0d1a12;--card:#15281c;--tx:#e6f4ea;--mu:#93b5a0;--g:#3ccf7a;--g2:#7fe3a8;--gl:#1b3a29;--bd:#25402f;--sh:0 4px 20px rgba(0,0,0,.4);color-scheme:dark}
+*{box-sizing:border-box}html,body{margin:0}
+body{background:var(--bg);color:var(--tx);font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;padding-bottom:84px}
+header{background:linear-gradient(135deg,#0e6b3a,#1f9d55);color:#fff;padding:22px 18px 46px;position:relative;overflow:hidden}
+header:after{content:"";position:absolute;right:-40px;top:-40px;width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,.1)}
+header h1{margin:0;font-size:1.5rem}header p{margin:2px 0 0;opacity:.9}
+.wrap{max-width:760px;margin:-30px auto 0;padding:0 14px;position:relative}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:18px;box-shadow:var(--sh);padding:18px;margin-bottom:14px;animation:up .4s ease both}
+@keyframes up{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.banner{border-radius:12px;padding:10px 14px;font-size:.9rem;margin-bottom:14px;background:var(--gl);border:1px solid var(--bd)}
+.banner.demo{background:#fff4d6;border-color:#f0d78a;color:#6a4b00}
+.view{display:none}.view.on{display:block}
+nav{position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:1px solid var(--bd);display:flex;justify-content:space-around;padding:6px 4px calc(6px + env(safe-area-inset-bottom,0px));z-index:5}
+nav button{flex:1;background:none;border:0;color:var(--mu);font:inherit;font-size:.72rem;padding:6px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;transition:.2s}
+nav button svg{width:22px;height:22px}nav button.on{color:var(--g)}
+.scanbtn{display:flex;margin:6px auto 14px;width:150px;height:150px;border-radius:50%;border:0;background:radial-gradient(circle at 30% 30%,#3ccf7a,#0e6b3a);color:#fff;font:700 1rem inherit;flex-direction:column;align-items:center;justify-content:center;gap:6px;cursor:pointer;box-shadow:0 0 0 0 rgba(31,157,85,.5);animation:pulse 2s infinite}
+.scanbtn svg{width:48px;height:48px}.scanbtn:active{transform:scale(.96)}
+@keyframes pulse{70%{box-shadow:0 0 0 22px rgba(31,157,85,0)}100%{box-shadow:0 0 0 0 rgba(31,157,85,0)}}
+.row{display:flex;gap:10px;flex-wrap:wrap}
+.btn{border:1px solid var(--g);background:var(--card);color:var(--g2);padding:10px 16px;border-radius:12px;font:600 .95rem inherit;cursor:pointer;transition:.2s;flex:1;min-width:130px}
+.btn:hover{background:var(--gl)}.btn.pri{background:var(--g);color:#fff}.btn.pri:hover{background:var(--g2)}.btn:disabled{opacity:.5}
+video,#prev{width:100%;border-radius:14px;background:#000;max-height:360px;object-fit:cover;display:none;margin-bottom:12px}
+.scanning{position:relative}.scanning:after{content:"";position:absolute;left:0;right:0;height:3px;background:#3ccf7a;box-shadow:0 0 14px #3ccf7a;animation:scan 1.4s ease-in-out infinite}
+@keyframes scan{0%,100%{top:5%}50%{top:90%}}
+.chip{display:inline-block;padding:3px 12px;border-radius:99px;font-size:.8rem;font-weight:700;color:#fff}
+.c-wet{background:#8a6d3b}.c-dry{background:#4a7bd0}.c-recyclable{background:#1f9d55}.c-food{background:#e08a1e}.c-hazardous{background:#d6453d}
+.res h2{margin:6px 0 2px}.res h4{margin:14px 0 4px;color:var(--g2)}.res ul{margin:0;padding-left:20px}
+.bar{height:8px;background:var(--gl);border-radius:9px;overflow:hidden}.bar i{display:block;height:100%;background:var(--g);transition:width .8s}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.stat{background:var(--gl);border-radius:14px;padding:14px}.stat b{display:block;font-size:1.7rem;color:var(--g2)}.stat span{font-size:.8rem;color:var(--mu)}
+.hist{display:flex;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--bd)}.hist:last-child{border:0}
+.hist img{width:54px;height:54px;border-radius:10px;object-fit:cover;background:var(--gl)}.hist div{flex:1;min-width:0}
+.hist small{color:var(--mu)}
+details{border:1px solid var(--bd);border-radius:12px;padding:10px 14px;margin-bottom:8px}summary{font-weight:600;cursor:pointer}
+.mu{color:var(--mu);font-size:.85rem}
+.spin{width:22px;height:22px;border:3px solid var(--gl);border-top-color:var(--g);border-radius:50%;animation:r .8s linear infinite;display:inline-block;vertical-align:middle;margin-right:8px}
+@keyframes r{to{transform:rotate(360deg)}}
+h3{margin:0 0 10px}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style></head><body>
+<header><h1>♻️ WasteWise AI</h1><p>Make Every Waste Count</p></header>
+<div class="wrap">
+<div id="banner" class="banner">Checking AI availability…</div>
+
+<section id="v-scan" class="view on">
+ <div class="card">
+  <button class="scanbtn" id="camBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>Scan Waste</button>
+  <div id="camBox" style="display:none"><div id="vwrap"><video id="vid" playsinline muted style="display:block"></video></div>
+   <div class="row"><button class="btn pri" id="snap">📸 Capture &amp; Classify</button><button class="btn" id="stopCam">Close camera</button></div></div>
+  <img id="prev" alt="Selected waste item">
+  <div class="row" id="upRow"><button class="btn" id="upBtn">🖼️ Upload image</button><button class="btn" id="demoBtn" style="display:none">🧪 Try a demo item</button></div>
+  <input type="file" id="file" accept="image/*" hidden>
+  <p class="mu" id="camErr" style="display:none"></p>
+ </div>
+ <div id="result"></div>
+</section>
+
+<section id="v-dash" class="view">
+ <div class="card"><h3>Your Impact</h3>
+  <div class="grid"><div class="stat"><b id="sTotal">0</b><span>Items classified</span></div><div class="stat"><b id="sRec">0</b><span>Recyclable / compostable</span></div>
+  <div class="stat"><b id="sCo2">0</b><span>kg CO₂ avoided (est.)</span></div><div class="stat"><b id="sTrees">0</b><span>Tree-days equivalent (est.)</span></div></div>
+  <p class="mu">Estimates use average item weights and typical emission factors. They are indicative, not measured.</p></div>
+ <div class="card"><h3>By category</h3><div id="cats"></div></div>
+ <div class="card"><h3>Sample data</h3><p class="mu">Fill the dashboard with realistic example entries to explore the app.</p><button class="btn" id="seed">Load sample history</button></div>
+</section>
+
+<section id="v-hist" class="view">
+ <div class="card"><div class="row" style="align-items:center;justify-content:space-between"><h3 style="margin:0">History</h3><button class="btn" id="clr" style="flex:none">Clear all</button></div><div id="hl"></div></div>
+</section>
+
+<section id="v-learn" class="view">
+ <div class="card"><h3>Waste Management 101</h3><div id="learn"></div></div>
+ <div class="card"><h3>Quick recycling tips</h3><ul id="gtips"></ul></div>
+</section>
+</div>
+
+<nav id="nav"></nav>
+<script>
+const CATS={wet:"Wet waste",dry:"Dry waste",recyclable:"Recyclable",food:"Food waste",hazardous:"Hazardous"};
+const IMPACT={wet:[.3,.10],dry:[.2,.15],recyclable:[.15,.9],food:[.4,.5],hazardous:[.1,.0]}; // [kg per item, kg CO2e avoided per kg]
+const ICON={scan:'<path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/>',dash:'<path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/>',hist:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',learn:'<path d="M3 6l9-3 9 3-9 3z"/><path d="M7 9v6c0 1.5 2.2 3 5 3s5-1.5 5-3V9"/>'};
+const TABS=[["scan","Scan"],["dash","Dashboard"],["hist","History"],["learn","Learn"]];
+const SAMPLES=[
+{item:"Plastic water bottle (PET)",category:"recyclable",confidence:.94,material:"PET plastic",bin:"Blue / dry recycling bin",disposal:["Empty and rinse the bottle","Crush it and replace the cap","Place in the recycling bin"],tips:["Recycled PET becomes fleece and new bottles","Peel off sleeves if your facility asks"]},
+{item:"Banana peel",category:"food",confidence:.97,material:"Organic matter",bin:"Green / compost bin",disposal:["Add to a compost bin or green bin","Chop it up so it breaks down faster"],tips:["Peels make a potassium-rich garden compost"]},
+{item:"Used AA batteries",category:"hazardous",confidence:.91,material:"Alkaline / metal",bin:"Hazardous drop-off point",disposal:["Do not put in household bin","Tape terminals if lithium","Take to an e-waste or battery collection point"],tips:["Batteries leak metals that contaminate soil and water"]},
+{item:"Cardboard box",category:"recyclable",confidence:.96,material:"Corrugated cardboard",bin:"Blue / dry recycling bin",disposal:["Flatten the box","Remove tape and labels if possible","Keep it dry"],tips:["Greasy cardboard (pizza box) should go to compost or general waste"]},
+{item:"Chip packet (multi-layer foil)",category:"dry",confidence:.88,material:"Metallised plastic film",bin:"Dry waste bin",disposal:["Shake out crumbs","Put in the dry waste bin"],tips:["Choose larger packs or paper packaging to cut this waste"]},
+{item:"Vegetable scraps and tea leaves",category:"wet",confidence:.9,material:"Kitchen organics",bin:"Wet waste / compost bin",disposal:["Drain extra liquid","Compost at home or use the wet waste bin"],tips:["Home composting reduces landfill methane"]}];
+const LEARN=[["Wet vs dry waste","Wet waste is biodegradable kitchen and garden matter. Dry waste is non-biodegradable material such as packaging, glass, metal and paper. Keeping them separate makes both composting and recycling work."],["The 5 Rs","Refuse, Reduce, Reuse, Recycle, Rot. Recycling is the fourth step, so avoiding waste in the first place has the biggest impact."],["Why hazardous waste is different","Batteries, paints, medicines, bulbs and e-waste contain toxic substances. They need special collection so they don't contaminate soil and water."],["Composting basics","Mix green (food scraps) and brown (dry leaves, paper) material, keep it damp, and turn it regularly. Avoid meat and dairy in a home pile."],["Contamination","One greasy or food-soiled item can spoil a recycling batch. Rinse containers and keep recyclables dry."]];
+const GTIPS=["Rinse containers; they don't need to be spotless.","Flatten boxes to save space.","Never bag recyclables in plastic bags.","Check local rules; accepted materials vary by city.","Carry a reusable bottle and bag."];
+
+const $=s=>document.querySelector(s);
+const store={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+let history=store.get("ww_hist",[]),sampleFn=null,canImg=false,stream=null,curBlob=null,mem=history;
+const save=()=>{store.set("ww_hist",history.slice(0,60))};
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+// nav
+$("#nav").innerHTML=TABS.map(([k,l],i)=>`<button data-t="${k}" class="${i?'':'on'}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${ICON[k]}</svg>${l}</button>`).join("");
+$("#nav").onclick=e=>{const b=e.target.closest("button");if(!b)return;go(b.dataset.t)};
+function go(t){document.querySelectorAll(".view").forEach(v=>v.classList.toggle("on",v.id==="v-"+t));document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("on",b.dataset.t===t));if(t!=="scan")stopCam();render();scrollTo({top:0,behavior:"smooth"})}
+
+// AI setup
+async function initAI(){
+ try{const s=await claude.use("sample");if(s){const l=await s.limits().catch(()=>({}));if(l&&l.images){sampleFn=s;canImg=true}}}catch(e){}
+ const b=$("#banner");
+ if(canImg){b.textContent="🟢 AI ready: images are classified by Claude vision. You may be asked to allow this on your first scan.";$("#demoBtn").style.display="none"}
+ else{b.className="banner demo";b.textContent="🟡 DEMO MODE: live AI isn't available in this view, so results are sample data and do NOT reflect your photo. Open the published link signed in to claude.ai for real classification.";$("#demoBtn").style.display=""}
+}
+initAI();
+
+// camera
+$("#camBtn").onclick=async()=>{
+ const err=$("#camErr");err.style.display="none";
+ try{stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:"environment"}},audio:false});
+  $("#vid").srcObject=stream;await $("#vid").play();$("#camBox").style.display="block";$("#prev").style.display="none";$("#camBtn").style.display="none"}
+ catch(e){err.textContent="Camera unavailable ("+(e.name||"error")+"). Use Upload instead.";err.style.display="block"}};
+function stopCam(){if(stream){stream.getTracks().forEach(t=>t.stop());stream=null}$("#camBox").style.display="none";$("#camBtn").style.display="flex"}
+$("#stopCam").onclick=stopCam;
+$("#snap").onclick=()=>{const v=$("#vid");shrink(v,v.videoWidth,v.videoHeight).then(b=>{stopCam();analyse(b)})};
+$("#upBtn").onclick=()=>$("#file").click();
+$("#file").onchange=async e=>{const f=e.target.files[0];e.target.value="";if(!f)return;const im=new Image();im.src=URL.createObjectURL(f);try{await im.decode()}catch(x){return fail("That file couldn't be read as an image.")}analyse(await shrink(im,im.naturalWidth,im.naturalHeight))};
+$("#demoBtn").onclick=()=>analyse(null);
+function shrink(src,w,h){return new Promise(r=>{const m=720,k=Math.min(1,m/Math.max(w,h)),c=document.createElement("canvas");c.width=Math.round(w*k);c.height=Math.round(h*k);c.getContext("2d").drawImage(src,0,0,c.width,c.height);c.toBlob(r,"image/jpeg",.8)})}
+const toURL=b=>new Promise(r=>{const f=new FileReader();f.onload=()=>r(f.result);f.readAsDataURL(b)});
+
+const PROMPT=`You are a waste-sorting expert. Look at the attached photo and identify the main waste item. Respond with ONLY JSON: {"item":"short name","category":"wet|dry|recyclable|food|hazardous","confidence":0-1,"material":"material","bin":"which bin or drop-off","disposal":["2-4 short steps"],"tips":["1-2 recycling or reuse tips"]}. Definitions: wet=biodegradable non-food (garden waste, tissues), food=food scraps/leftovers, dry=non-recyclable dry items, recyclable=paper/glass/metal/plastic accepted in recycling, hazardous=batteries, chemicals, e-waste, medicines, bulbs. If no waste item is visible, set item to "No waste item detected", category "dry" and confidence 0.`;
+
+async function analyse(blob){
+ const out=$("#result"),pv=$("#prev");
+ out.innerHTML=`<div class="card"><span class="spin"></span>Analysing…</div>`;
+ let url="";
+ if(blob){url=await toURL(blob);pv.src=url;pv.style.display="block";pv.classList.add("scanning")}
+ let r,demo=false;
+ try{
+  if(blob&&canImg){r=await sampleFn.json(PROMPT,{images:[blob],cache:false})}
+  else{demo=true;await new Promise(x=>setTimeout(x,900));r=SAMPLES[Math.floor(Math.random()*SAMPLES.length)]}
+ }catch(e){pv.classList.remove("scanning");const c=e&&e.code;return fail(c==="not_granted"?"AI access wasn't allowed, so nothing was classified. Allow it and try again.":c==="rate_limited"?"Too many requests. Please wait a moment and retry.":"Classification failed. Please try again.")}
+ pv.classList.remove("scanning");
+ if(!CATS[r.category]){return fail("The AI returned an unexpected answer. Please try again.")}
+ const rec={id:Date.now(),t:Date.now(),demo,item:r.item||"Unknown item",category:r.category,confidence:Math.max(0,Math.min(1,+r.confidence||0)),material:r.material||"",bin:r.bin||"",disposal:r.disposal||[],tips:r.tips||[],thumb:blob?await thumb(blob):""};
+ if(rec.confidence>0||demo){history.unshift(rec);save()}
+ show(rec)}
+function thumb(b){return new Promise(r=>{const i=new Image();i.onload=()=>{const c=document.createElement("canvas");c.width=c.height=80;const s=Math.min(i.width,i.height);c.getContext("2d").drawImage(i,(i.width-s)/2,(i.height-s)/2,s,s,0,0,80,80);r(c.toDataURL("image/jpeg",.6))};i.src=URL.createObjectURL(b)})}
+function fail(m){$("#result").innerHTML=`<div class="card" style="border-color:#d6453d">⚠️ ${esc(m)}</div>`}
+function show(r){
+ const li=a=>(a||[]).map(x=>`<li>${esc(x)}</li>`).join("");
+ $("#result").innerHTML=`<div class="card res"><span class="chip c-${r.category}">${CATS[r.category]}</span>${r.demo?' <span class="chip" style="background:#b8860b">DEMO sample</span>':''}
+ <h2>${esc(r.item)}</h2><div class="mu">${esc(r.material)}</div>
+ <div class="mu" style="margin-top:8px">Confidence ${Math.round(r.confidence*100)}%</div><div class="bar"><i style="width:0" data-w="${r.confidence*100}%"></i></div>
+ ${r.confidence===0&&!r.demo?'<p>No clear waste item found. Try a closer, well-lit photo.</p>':`<h4>🗑️ Where it goes</h4><p style="margin:0">${esc(r.bin)}</p><h4>✅ Disposal guide</h4><ul>${li(r.disposal)}</ul><h4>💡 Recycling tips</h4><ul>${li(r.tips)}</ul>`}
+ <p class="mu">${r.demo?"Demo result: not based on your image.":"AI suggestions can be wrong. Follow your local waste rules."}</p></div>`;
+ requestAnimationFrame(()=>setTimeout(()=>{const i=$("#result .bar i");if(i)i.style.width=i.dataset.w},50))}
+
+// views
+function render(){
+ const n=history.length,rec=history.filter(h=>h.category==="recyclable"||h.category==="food"),kg=h=>(IMPACT[h.category][0]),co2=history.reduce((s,h)=>s+IMPACT[h.category][0]*IMPACT[h.category][1],0);
+ count("#sTotal",n);count("#sRec",rec.length);count("#sCo2",co2,1);count("#sTrees",co2*18,0);
+ $("#cats").innerHTML=Object.keys(CATS).map(k=>{const c=history.filter(h=>h.category===k).length,p=n?c/n*100:0;return `<div style="margin-bottom:10px"><div style="display:flex;justify-content:space-between"><span><span class="chip c-${k}">${CATS[k]}</span></span><b>${c}</b></div><div class="bar" style="margin-top:4px"><i style="width:${p}%"></i></div></div>`}).join("");
+ $("#hl").innerHTML=n?history.map(h=>`<div class="hist">${h.thumb?`<img src="${h.thumb}" alt="">`:`<img alt="" style="visibility:hidden">`}<div><b>${esc(h.item)}</b>${h.demo?' <small>(demo)</small>':''}<br><span class="chip c-${h.category}">${CATS[h.category]}</span> <small>${new Date(h.t).toLocaleString()}</small></div><button class="btn" data-del="${h.id}" style="flex:none;min-width:0;padding:6px 10px" aria-label="Delete">✕</button></div>`).join(""):`<p class="mu">Nothing yet. Scan an item or load sample history from the Dashboard.</p>`;
+ $("#learn").innerHTML=LEARN.map(([t,b])=>`<details><summary>${t}</summary><p>${b}</p></details>`).join("");
+ $("#gtips").innerHTML=GTIPS.map(t=>`<li>${t}</li>`).join("")}
+function count(sel,to,d=0){const el=$(sel),t0=performance.now();(function f(t){const p=Math.min(1,(t-t0)/600);el.textContent=(to*p).toFixed(d);if(p<1)requestAnimationFrame(f)})(t0)}
+$("#hl").onclick=e=>{const b=e.target.closest("[data-del]");if(!b)return;history=history.filter(h=>h.id!=b.dataset.del);save();render()};
+$("#clr").onclick=()=>{if(history.length&&confirm("Delete all history?")){history=[];save();render()}};
+$("#seed").onclick=()=>{const now=Date.now();const add=[];for(let i=0;i<14;i++){const s=SAMPLES[i%SAMPLES.length];add.push({...s,id:now+i,t:now-i*3.6e6*7,demo:true,thumb:""})}history=add.concat(history);save();render();go("dash")};
+render();
+</script></body></html>
