@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0d281f"><title>WasteWise AI — Make Every Waste Count</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div class="app-shell">
+<aside class="sidebar">
+  <a class="brand" href="#"><span class="brand-icon">♻</span><span>WasteWise<span class="brand-ai">AI</span><small>MAKE EVERY WASTE COUNT</small></span></a>
+  <div class="side-label">WORKSPACE</div>
+  <button class="nav active" data-page="scan"><span>⌕</span> Scan waste</button>
+  <button class="nav" data-page="dashboard"><span>▦</span> Dashboard</button>
+  <button class="nav" data-page="history"><span>◷</span> Scan history</button>
+  <button class="nav" data-page="learn"><span>✳</span> Learn to sort</button>
+  <div class="sidebar-bottom"><div class="eco-card"><span>🌱</span><b>Small actions.<br>Cleaner tomorrow.</b><p>Every correctly sorted item makes a difference.</p></div><div class="status"><i></i> AI service status <span id="serviceStatus">Checking…</span></div></div>
+</aside>
+<main class="main">
+<header class="topbar"><div><div class="eyebrow">YOUR SMART RECYCLING COMPANION</div><h1 id="pageTitle">Waste scanner</h1></div><div class="top-right"><span class="live-pill"><i></i> GEMINI AI</span><div class="avatar">WW</div></div></header>
+
+<section class="page active" id="page-scan">
+  <div class="intro"><div><div class="tag">♻ AI-POWERED SORTING</div><h2>Give your waste a<br><em>better next life.</em></h2><p>Take a photo or upload an image. Our AI will identify the item and guide you to the right bin.</p></div><div class="intro-art"><div class="orbit orbit1"></div><div class="orbit orbit2"></div><div class="leaf">♻</div><span class="spark s1">✦</span><span class="spark s2">✧</span></div></div>
+  <div class="scan-grid">
+    <div class="panel upload-panel"><div class="panel-head"><div><span class="step">01</span><h3>Add a waste image</h3></div><span class="muted">JPG, PNG · max 8 MB</span></div>
+      <div class="dropzone" id="dropzone"><input type="file" id="fileInput" accept="image/*" hidden><div id="emptyUpload"><div class="upload-icon">↑</div><b>Drop an image here</b><span>or browse files from your device</span><button class="btn btn-outline" id="browseBtn">Choose image</button></div><div id="previewWrap" class="preview-wrap hidden"><img id="preview" alt="Selected waste"><button id="removeImage" class="remove">×</button><span id="fileName"></span></div></div>
+      <div class="upload-actions"><button class="btn btn-dark" id="cameraBtn">◎ Use camera</button><button class="btn btn-primary" id="analyseBtn" disabled>Analyse with AI <span>→</span></button></div>
+      <p class="privacy">🔒 Your image is sent securely to the AI service for analysis and is not saved on the server.</p>
+    </div>
+    <div class="panel result-panel"><div class="panel-head"><div><span class="step">02</span><h3>AI identification</h3></div><span class="ai-badge">✦ LIVE AI</span></div>
+      <div id="resultEmpty" class="result-empty"><div class="scan-symbol">⌗</div><b>Waiting for an image</b><p>Your classification and disposal guide will appear here.</p><div class="skeleton"></div><div class="skeleton short"></div></div>
+      <div id="loading" class="loading hidden"><div class="loader"></div><b>Analysing your image…</b><p>Gemini AI is identifying the visible material.</p></div>
+      <div id="result" class="result hidden"></div>
+    </div>
+  </div>
+  <div class="tip-strip"><span>💡</span><div><b>For best results</b><p>Use a clear, well-lit photo with one main waste item visible. Remove clutter from the background if possible.</p></div></div>
+</section>
+
+<section class="page" id="page-dashboard"><div class="section-intro"><div class="tag">YOUR IMPACT</div><h2>Little habits, <em>big change.</em></h2><p>Your activity on this device, based on completed AI scans.</p></div><div class="stats"><div class="stat"><span>Total scans</span><b id="totalScans">0</b><small>Images analysed</small></div><div class="stat"><span>Recyclables found</span><b id="recyclables">0</b><small>Potentially recoverable</small></div><div class="stat"><span>Most common</span><b class="stat-word" id="commonCategory">—</b><small>Top category</small></div></div><div class="panel chart-panel"><h3>Category breakdown</h3><div id="chart" class="chart-empty">Your category breakdown will appear after your first scan.</div></div></section>
+
+<section class="page" id="page-history"><div class="section-intro"><div class="tag">YOUR RECENT ACTIVITY</div><h2>Scan <em>history.</em></h2><p>Previous results are stored locally in this browser.</p></div><div class="panel history-panel"><div class="history-head"><h3>Recent scans</h3><button class="text-btn" id="clearHistory">Clear history</button></div><div id="historyList" class="history-list"><div class="empty-history">No scans yet. Start by analysing an image.</div></div></div></section>
+
+<section class="page" id="page-learn"><div class="section-intro"><div class="tag">SORT IT RIGHT</div><h2>Know your <em>bins.</em></h2><p>Local waste rules can vary. Always follow your municipality's collection guidelines.</p></div><div class="learn-grid">
+<div class="learn-card"><span class="bin bin-green">♻</span><h3>Wet waste</h3><p>Biodegradable kitchen and garden waste such as vegetable peels, leaves and flowers.</p><b>Usually: Green bin</b></div>
+<div class="learn-card"><span class="bin bin-blue">▤</span><h3>Dry waste</h3><p>Clean, non-biodegradable waste such as paper, packaging and some household materials.</p><b>Usually: Blue bin</b></div>
+<div class="learn-card"><span class="bin bin-cyan">↻</span><h3>Recyclables</h3><p>Clean paper, cardboard, glass, metal cans and accepted plastic containers.</p><b>Keep clean and dry</b></div>
+<div class="learn-card"><span class="bin bin-orange">⚠</span><h3>Hazardous waste</h3><p>Batteries, chemicals, paint, bulbs and e-waste need separate authorised collection.</p><b>Never mix with regular waste</b></div>
+</div></section>
+<footer>WASTEWISE AI <span>·</span> SORT SMART. LIVE GREEN.</footer>
+</main>
+</div>
+<div id="cameraModal" class="modal hidden"><div class="modal-card"><div class="modal-head"><h3>Camera scan</h3><button id="closeCamera" class="remove">×</button></div><video id="video" autoplay playsinline></video><canvas id="canvas" hidden></canvas><p id="cameraMessage">Allow camera access to capture a waste item.</p><button class="btn btn-primary full" id="captureBtn">Capture photo</button></div></div>
+<div id="toast" class="toast"></div>
+<script src="/app.js"></script>
+</body></html>
